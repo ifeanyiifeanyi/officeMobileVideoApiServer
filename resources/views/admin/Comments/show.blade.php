@@ -21,63 +21,93 @@
 
                     </div>
                     <div class="row">
-                        <div class="table-responsive">
-                            <table class="table table-borderd">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-borderd">
 
-                                <tr>
-                                    <th>Comment</th>
-                                    <td>
-                                        {!! $comment->comment !!}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>User </th>
-                                    <td>
-                                        {{ $comment->user->username }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Blog Title </th>
-                                    <td>
-                                        {{ $comment->blog->title }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Status</th>
-                                    <td>
-                                        <p> {{ $comment->status == 0 ? "Pending" : "Approved" }}</p>
-                                        <p>
-                                            <form>
-                                                <div class="form-group">
-                                                    <select class="form-control">
-                                                        <option>Select Comment Status</option>
-                                                        @if ($comment->status == 0)
-                                                        <option value="1">Approve Comment</option>
-                                                        @else
-                                                        <option value="0">Suspend Account</option>
-                                                        @endif
-                                                    </select>
+                                    <tr>
+                                        <th>Comment</th>
+                                        <td>
+                                            {!! $comment->comment !!}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>User </th>
+                                        <td>
+                                            {{ $comment->user->username }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Blog Title </th>
+                                        <td>
+                                            {{ $comment->blog->title }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Status</th>
+                                        <td>
+                                            <p> {{ $comment->status == 0 ? "Pending" : "Approved" }}</p>
+                                            <p>
+                                                <form method="post" action="{{ route('comment.update.status') }}">
+                                                    @csrf
+                                                    <input type="hidden" name="comment_id" value={{$comment->id}} />
+                                                    <div class="form-group">
+                                                        <select class="form-control" name="status">
+                                                            <option>Select Comment Status</option>
+                                                            @if ($comment->status == 0)
+                                                            <option value="1">Approve Comment</option>
+                                                            @else
+                                                            <option value="0">Suspend Comment</option>
+                                                            @endif
+                                                        </select>
+                                                        @error('status')
+                                        <div class="text text-danger">{{ $message }}</div>
+                                        @enderror
+                                                    
+                                                    </div>
                                                     <button class="btn btn-info mt-2">Submit</button>
+                                                </form>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Reply Comment: </th>
+                                        <td>
+                                            <form method="post" action="{{route('comment.reply.message')}}">
+                                            @csrf
+                                            <input type="hidden" name="comment_id" value={{$comment->id}} />
+                                                <div class="form-group">
+                                                    <textarea class="form-control" name="reply"></textarea>
+                                                    @error('reply')
+                                        <div class="text text-danger">{{ $message }}</div>
+                                        @enderror
                                                 </div>
-                                            </form>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Reply Comment: </th>
-                                    <td>
-                                        <form>
-                                            <div class="form-group">
-                                                <textarea class="form-control"></textarea>
-                                            </div>
-                                            <button class="btn btn-sm btn-in">Send Comment</button>
-                                    </td>
-                                </tr>
+                                                <button class="btn btn-sm btn-info">Submit Reply</button>
+                                        </td>
+                                    </tr>
 
-                            </table>
+                                </table>
 
+                            </div>
                         </div>
-
+                        <div class="col-md-12">
+                            <h2>Our replies to the comment</h2>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    @if($replies->count())
+                                    @foreach($replies as $reply)
+                                        <tr>
+                                            <th>{{$loop->iteration}}</th>
+                                            <th>{!! $reply->reply !!}</th>
+                                            <th>{!! $reply->created_at !!}</th>
+                                        </tr>
+                                    @endforeach
+                                    @else
+                                        <h4>No replies </h4>
+                                    @endif
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
