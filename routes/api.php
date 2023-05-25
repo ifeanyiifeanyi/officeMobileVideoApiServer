@@ -82,6 +82,8 @@ Route::post('updateProfile', [UserController::class, 'updateProfile']);
 
 Route::get('blog', [UserController::class, 'blogContent']);
 
+Route::post('blog/comment', [UserController::class, 'blogComment']);
+
 
 
 //ngrok http http://localhost:8000 -> REMEMBER FOR your api url to your appp

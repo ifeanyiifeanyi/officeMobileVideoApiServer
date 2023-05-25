@@ -12,4 +12,9 @@ class CommentsController extends Controller
         $comments = Comment::latest()->get();
         return view('admin.Comments.index', ['comments' => $comments]);
     }
+
+    public function show($id){
+        $comment = Comment::findOrFail($id);
+        return view('admin.Comments.show', ['comment' => $comment]);
+    }
 }

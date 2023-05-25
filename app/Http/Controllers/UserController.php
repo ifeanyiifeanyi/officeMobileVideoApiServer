@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Blog;
 use App\Models\User;
 use App\Models\Videos;
+use App\Models\Comment;
 use App\Models\categories;
 use App\Models\UserVerify;
 use App\Helper\UserService;
@@ -507,7 +508,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function blogContent(){
+    public function blogContent()
+    {
         $blogs = Blog::latest()->get();
         if (!$blogs) {
             return response()->json([
@@ -516,6 +518,34 @@ class UserController extends Controller
         } else {
             return response()->json($blogs);
         }
+    }
+
+    public function blogComment(Request $request)
+    {
+
+        $userId = $request->userId;
+        $postId = $request->postId;
+        $comment = $request->comment;
+
+        // Check if the user with the given ID exists
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Save the comment to the comment table
+        // $comment = new Comment();
+        // $comment->user_id = $userId;
+        // $comment->post_id = $postId;
+        // $comment->comment = $comment;
+        // $comment->save();
+        
+        DB::table('comments')->insert(['user_id' => $userId, 'post_id' => $postId, 'comment' => $comment, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
+
+
+        return response()->json(['success' => true]);
+
+
     }
 
 }

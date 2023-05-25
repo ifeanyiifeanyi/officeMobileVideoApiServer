@@ -26,15 +26,33 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Comments</th>
                                         <th>Post Title</th>
                                         <th>Comment By (user)</th>
                                         <th>Status</th>
-                                        <th>Edit</th>
+                                        <th>View</th>
                                         <th>Delete</th>
                                     </tr>
                                 </thead>
-                               
+                               <tbody>
+                                @foreach($comments as $comment)
+
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $comment->blog->title }}</td>
+                                    <td>{{ $comment->user->username }}</td>
+                                    <td>{{ $comment->status == 0 ? 'Pending' : 'Approved' }}</td>
+                                    <td>
+                                        <a href="{{ route('comment.view', $comment->id) }}" class="btn btn-sm btn-info">View</a>
+                                    </td>
+                                    <td>
+                                        <a href="" class="btn btn-sm btn-danger">Delete</a>
+                                    </td>
+
+
+                                </tr>
+
+                                @endforeach
+                               </tbody>
                             </table>
 
                         </div>

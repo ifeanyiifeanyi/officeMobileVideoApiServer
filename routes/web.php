@@ -126,6 +126,7 @@ Route::group(['middleware' => ['auth', 'isAdmin']], function(){
 
     Route::controller(CommentsController::class)->group(function(){
         Route::get('comments', 'index')->name('comments');
+        Route::get('comment/view/{id}', 'show')->name('comment.view');
     });
 
 
