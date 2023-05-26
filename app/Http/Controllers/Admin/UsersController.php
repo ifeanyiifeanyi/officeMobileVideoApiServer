@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\ActivePlans;
+use App\Models\PaymentPlan;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class UsersController extends Controller
 {
@@ -16,7 +18,16 @@ class UsersController extends Controller
 
     public function details($id){
         $user = User::find($id);
-        return view('admin.users.details', compact('user'));
+
+        // find out if the user has active subscription
+        $activePlan = ActivePlans::where("userId", $user->id)->first();
+        if($activePlan){
+            // then get the subscription details
+            $paymentPlan = PaymentPlan::find($activePlan->paymentPlanId);
+        }
+        
+        dd($activePlan);
+        return view('admin.users.details', compact('user', 'activePlan', 'paymentPlan'));
     }
 
     // suspend user account with user if

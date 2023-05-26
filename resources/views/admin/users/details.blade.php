@@ -1,90 +1,217 @@
 @extends('admin.layouts/adminlayout')
 
 
-@section('title', 'User profile :: '.$user->username)
+@section('title', 'User :: '.$user->username)
 @section('adminlayout')
+<style>
+.section {
+    padding: 100px 0;
+    position: relative;
+}
+.gray-bg {
+    background-color: #f5f5f5;
+}
+img {
+    max-width: 100%;
+}
+img {
+    vertical-align: middle;
+    border-style: none;
+}
+/* About Me 
+---------------------*/
+.about-text h3 {
+  font-size: 45px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+@media (max-width: 767px) {
+  .about-text h3 {
+    font-size: 35px;
+  }
+}
+.about-text h6 {
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+@media (max-width: 767px) {
+  .about-text h6 {
+    font-size: 18px;
+  }
+}
+.about-text p {
+  font-size: 18px;
+  max-width: 450px;
+}
+.about-text p mark {
+  font-weight: 600;
+  color: #20247b;
+}
 
+.about-list {
+  padding-top: 10px;
+}
+.about-list .media {
+  padding: 5px 0;
+}
+.about-list label {
+  color: #20247b;
+  font-weight: 600;
+  width: 88px;
+  margin: 0;
+  position: relative;
+}
+.about-list label:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 11px;
+  width: 1px;
+  height: 12px;
+  background: #20247b;
+  -moz-transform: rotate(15deg);
+  -o-transform: rotate(15deg);
+  -ms-transform: rotate(15deg);
+  -webkit-transform: rotate(15deg);
+  transform: rotate(15deg);
+  margin: auto;
+  opacity: 0.5;
+}
+.about-list p {
+  margin: 0;
+  font-size: 15px;
+}
+
+@media (max-width: 991px) {
+  .about-avatar {
+    margin-top: 30px;
+  }
+}
+
+.about-section .counter {
+  padding: 22px 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(31, 45, 61, 0.125);
+}
+.about-section .counter .count-data {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.about-section .counter .count {
+  font-weight: 700;
+  color: #20247b;
+  margin: 0 0 5px;
+}
+.about-section .counter p {
+  font-weight: 600;
+  margin: 0;
+}
+mark {
+    background-image: linear-gradient(rgba(252, 83, 86, 0.6), rgba(252, 83, 86, 0.6));
+    background-size: 100% 3px;
+    background-repeat: no-repeat;
+    background-position: 0 bottom;
+    background-color: transparent;
+    padding: 0;
+    color: currentColor;
+}
+.theme-color {
+    color: #fc5356;
+}
+.dark-color {
+    color: #20247b;
+}
+</style>
 <div class="container-fluid py-4" style="height:100vh">
 
-  <div class="row mt-4">
-    <div class="col-lg-12 mb-lg-0 mb-4">
-      <div class="card ">
-        <div class="card-header pb-0 p-3">
-          @if(session('status'))
-          <div class="alert alert-success">{{session('status')}}</div>
-          @endif
-          <div class="d-flex justify-content-between">
-
-            <h6 class="mb-2">user Details</h6>
-            <p style="float: right"><a class="btn btn-outline-primary" href="{{ route('users.all') }}"><i
-                  class="fas fa-arrow-left"></i> Back</a>
-            </p>
-
-          </div>
-          <h5>
-            Account Status<sup><span class="font-weight-light">, {{ $user->status === 1 ? "Active" : "Inactive"
-                }}</span></sup>
-          </h5>
-        </div>
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-8">
-            <div class="card-body card-profile shadow-lg">
-              <img style="height: 30vh;object-fit:cover" src="{{ asset('backend/assets/img/bg-profile.jpg') }}"
-                alt="Image placeholder" class="card-img-top">
-              <div class="row justify-content-center">
-                <div class="col-4 col-lg-4 order-lg-2">
-                  <div class="mt-n4 mt-lg-n6 mb-4 mb-lg-0">
-                    <a href="javascript:;">
-                      <img src="{{ $user->image ? $user->image : "
-                        https://ui-avatars.com/api/?name=No+image&background=0D8ABC&color=fff&bold=true&size=128" }}"
-                        class="rounded-circle img-fluid border border-2 border-white">
-                    </a>
-                  </div>
+  <section class="section about-section gray-bg" id="about">
+            <div class="container">
+                <div class="row align-items-center flex-row-reverse">
+                    <div class="col-lg-6">
+                        <div class="about-text go-to">
+                            <h3 class="dark-color">{{$user->name}}</h3>
+                          
+                            <div class="row about-list">
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="media">
+                                        <label>Date Join</label>
+                                        <p>{{ \Carbon\Carbon::parse($user->created_at)->diffForHumans() }}</p>
+                                    </div>
+                                    <div class="media">
+                                        <label>Account Code</label>
+                                        <p>{{$user->userid}}</p>
+                                    </div>
+                                    <div class="media">
+                                        <label>Username</label>
+                                        <p>{{$user->username}}</p>
+                                    </div>
+                                   
+                                    
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="media">
+                                        <label>E-mail</label>
+                                        <p>{{ $user->email }}</p>
+                                    </div>
+                                   
+                                    <div class="media">
+                                        <label>Account Type </label>
+                                        <p> {{ $user->role_as === 1 ? "Admin" :
+                        "Subscriber" }}</p>
+                                    </div>
+                                    <div class="media">
+                                        <label>Account Status</label>
+                                        <p>{{$user->status == 1 ? "Verified" : "Not Verified"}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="about-avatar">
+                            <img width="100%" src="{{ $user->image ? $user->image : "
+                        https://ui-avatars.com/api/?name=".$user->name."&background=0D8ABC&color=fff&bold=true&size=128" }}" title="" alt="">
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
-                <div class="d-flex justify-content-between">
-                  <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-none d-lg-block">Approve Payment</a>
-                  <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-block d-lg-none"><i
-                      class="ni ni-collection"></i></a>
-                  <a href="{{ route('users.suspend', $user->id) }}" class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block"> Suspend
-                    Account</a>
-                  <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none"><i
-                      class="ni ni-email-83"></i></a>
-                </div>
-              </div>
-              <div class="card-body pt-0">
-                <div class="row">
-                  <div class="col">
-                    <h4>Dated Joined: </h4>
-                    <p class="leading">{{ \Carbon\Carbon::parse($user->created_at)->diffForHumans() }}</p>
-                  </div>
-                </div>
-                <div class="text-center mt-4">
-                  <h5>
-                    {{ ucwords($user->name) }}<sup><span class="font-weight-light">, {{ $user->role_as === 1 ? "Admin" :
-                        "Suscriber" }}</span></sup>
-                  </h5>
+                <div class="counter">
+                @if($activePlan->count())
+                    <div class="row">
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="500" data-speed="500">500</h6>
+                                <p class="m-0px font-w-600">Happy Clients</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="150" data-speed="150">150</h6>
+                                <p class="m-0px font-w-600">Project Completed</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="850" data-speed="850">850</h6>
+                                <p class="m-0px font-w-600">Photo Capture</p>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                <h6 class="count h2" data-to="190" data-speed="190">190</h6>
+                                <p class="m-0px font-w-600">Telephonic Talk</p>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                  <h4></h4>
 
-                  <div class="h6 font-weight-300">
-                    <i class="ni location_pin mr-2"></i>{{ $user->email }}
-                  </div>
-
-                  <div>
-                    <i class="ni education_hat mr-2"></i> {{ $user->userid }}
-                  </div>
+                @endif
                 </div>
-              </div>
             </div>
+        </section>
 
-          </div>
-          <div class="col-md-2"></div>
-        </div>
-      </div>
-    </div>
-
-  </div>
 </div>
 
 
