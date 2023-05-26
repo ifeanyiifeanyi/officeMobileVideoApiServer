@@ -15,48 +15,45 @@
                     @endif
                     <div class="d-flex justify-content-between">
 
-                        <h2 class="mb-2">@yield('title')</h2>
+                        <h4 class="mb-2">@yield('title')</h4>
                         <p style="float: right"><a class="btn btn-outline-primary" href="{{ route("payment.plan") }}"><i class="fas fa-plus"></i>
                                 Back to plans</a></p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12 table-responsive">
-                        <table class="table table-bordered p-5">
+                        <table class="table table-bordered table-hover">
+
                             <tr>
-                                <th>Name: </th>
-                                <td>{{ ucwords($activePlan->payment_name) }}</td>
+                                <th>#</th>
+                                <th>Plan</th>
+                                <th>Amount</th>
+                                <th>Duration</th>
+                                <th>Transaction Reference</th>
+                                <th>User</th>
+                                <th>User Email</th>
+                                <th>Status</th>
+                                <th>View</view>
                             </tr>
-                            <tr>
-                                <th>Transaction Code: </th>
-                                <td>{{ ucwords($activePlan->transaction_reference) }}</td>
-                            </tr>
-                            <tr>
-                                <th>Price: </th>
-                                <td>{{ ucwords($activePlan->amount) }}</td>
-                            </tr>
-                            <tr>
-                                <th>User: </th>
-                                <td>{{ ucwords($activePlan->name) }}</td>
-                            </tr>
-                            <tr>
-                                <th>User Email: </th>
-                                <td>{{ ucwords($activePlan->email) }}</td>
-                            </tr>
-                            <tr>
-                                <th>Start Date: </th>
-                                <td>{{ ucwords(\Carbon\Carbon::parse($activePlan->startDate)->diffForHumans()) }}</td>
-                            </tr>
-                            <tr>
-                                <th>End Date: </th>
-                                <td>{{ ucwords(\Carbon\Carbon::parse($endDate)->diffForHumans()) }}</td>
-                            </tr>
-                            <tr>
-                                <th>Remaining  No. of Days: </th>
-                                <td>{{ $remainingDays }}</td>
-                            </tr>
-                            
-                          
+                           @if($activePlans->count())
+                                @foreach($activePlans as $activePlan)
+                                    <tr>
+                                        <td>{{$loop->iteration}}</td>
+                                        <td>{{$activePlan->payment_name}}</td>
+                                        <td>{{$activePlan->amount}}</td>
+                                        <td>{{$activePlan->duration_in_name}}</td>
+                                        <td>{{$activePlan->transaction_reference}}</td>
+                                        <td>{{$activePlan->username}}</td>
+                                        <td>{{$activePlan->email}}</td>
+                                        <td>{{$activePlan->status == 1? "Active" : "Not active"}}</td>
+                                        <td><a href="{{ route('user.subscribe.plan', $activePlan) }}" class="btn btn-primary btn-sm">View</a></td>
+
+                                    </tr>
+
+                                @endforeach
+                           @else
+                                <h2>No Active Subscription(s)</h2>
+                           @endif
                         </table>
 
                     </div>

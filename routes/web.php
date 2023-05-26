@@ -38,51 +38,65 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // Admin routes
 Route::group(['middleware' => ['auth', 'isAdmin']], function(){
 
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    // movie web categories
-    Route::get('/categories', [CategoryController::class, 'index'])->name('category.view');
-    Route::get('/create/categories', [CategoryController::class, 'create'])->name('category.create');
-    Route::post('/store/categories', [CategoryController::class, 'store'])->name('category.store');
-    Route::get('/edit/{id}/categories', [CategoryController::class, 'edit'])->name('category.edit');
-    Route::post('/update/{id}/categories', [CategoryController::class, 'update'])->name('category.update');
-    Route::delete('/delete/{id}/categories', [CategoryController::class, 'destroy'])->name('category.delete');
+    Route::controller(AdminController::class)->group(function(){
+        Route::get('/dashboard', 'dashboard')->name('dashboard');
+    });
 
+    // movie categories
+    Route::controller(CategoryController::class)->group(function(){
+        Route::get('/categories', 'index')->name('category.view');
+        Route::get('/create/categories', 'create')->name('category.create');
+        Route::post('/store/categories', 'store')->name('category.store');
+        Route::get('/edit/{id}/categories', 'edit')->name('category.edit');
+        Route::post('/update/{id}/categories', 'update')->name('category.update');
+        Route::delete('/delete/{id}/categories', 'destroy')->name('category.delete');    
+    });
+  
 
+    // movie subscription plan managemn routes 
+    Route::controller(PaymentPlansController::class)->group(function(){
+        Route::get('/payment-plans', 'index')->name('payment.plan');
+        Route::get('/create/payment-plans', 'create')->name('payment.create');
+        Route::post('/save/c', 'save')->name('payment.save');
+        Route::get('/edit/{id}/payment-plans', 'edit')->name('payment.edit');
+        Route::post('/update/{id}/payment-plans', 'update')->name('payment.update');
+        Route::delete('/delete/{id}/payment-plans', 'delete')->name('payment.delete');
+    });
 
-    // movie plans routes 
-    Route::get('/payment-plans', [PaymentPlansController::class, 'index'])->name('payment.plan');
-    Route::get('/create/payment-plans', [PaymentPlansController::class, 'create'])->name('payment.create');
-    Route::post('/save/c', [PaymentPlansController::class, 'save'])->name('payment.save');
-    Route::get('/edit/{id}/payment-plans', [PaymentPlansController::class, 'edit'])->name('payment.edit');
-    Route::post('/update/{id}/payment-plans', [PaymentPlansController::class, 'update'])->name('payment.update');
-    Route::delete('/delete/{id}/payment-plans', [PaymentPlansController::class, 'delete'])->name('payment.delete');
 
     // active plans routes
     // Route::get('payment-plans/plan/{id}', [PaymentPlansController::class,'activePlan'])->name('payment.check.plan');
     Route::controller(ActivePlanController::class)->group(function(){
-        Route::get('user/active/payment-plans/{id}', 'index')->name('active.user.plan');
+        Route::get('active/payment-plans/{id}', 'index')->name('active.user.plan');
+        Route::get('active/plans/{activePlans:id}', 'activeUserSubscription')->name('user.subscribe.plan');
 
     });
 
 
-
+ 
 
     // manage registered members 
-    Route::get('/users', [UsersController::class, 'index'])->name('users.all');
-    Route::get('/user/details/{id}', [UsersController::class, 'details'])->name('users.detail');
-    Route::get('/user/suspend/{id}', [UsersController::class, 'suspend'])->name('users.suspend');
-    Route::get('/user/activate/{id}', [UsersController::class, 'activate'])->name('users.activate');
-    Route::get('/user/grant/{id}', [UsersController::class, 'MakeAdmin'])->name('make.admin');
-    Route::get('/user/revoke/{id}', [UsersController::class, 'RevokeAdmin'])->name('admin.revoke');
-    Route::delete('/delete/user/{id}', [UsersController::class, 'destroy'])->name('user.destroy');
+    Route::controller(UsersController::class)->group(function(){
+        Route::get('/users', 'index')->name('users.all');
+        Route::get('/user/details/{id}', 'details')->name('users.detail');
+        Route::get('/user/suspend/{id}', 'suspend')->name('users.suspend');
+        Route::get('/user/activate/{id}', 'activate')->name('users.activate');
+        Route::get('/user/grant/{id}', 'MakeAdmin')->name('make.admin');
+        Route::get('/user/revoke/{id}', 'RevokeAdmin')->name('admin.revoke');
+        Route::delete('/delete/user/{id}', 'destroy')->name('user.destroy');
+
+    });
 
 
     //vidoe genre manager
-    Route::get('/genre', [GenreController::class, 'index'])->name('genre');
-    Route::post('/genre', [GenreController::class, 'create'])->name('genre.create');
-    Route::get('/genre/{id}', [GenreController::class, 'edit'])->name('genre.edit');
-    Route::post('/genre/{id}', [GenreController::class, 'update'])->name('genre.update');
-    Route::delete('/genre/{id}', [GenreController::class, 'destroy'])->name('genre.destroy');
+    Route::controller(GenreController::class)->group(function(){
+        Route::get('/genre', 'index')->name('genre');
+        Route::post('/genre', 'create')->name('genre.create');
+        Route::get('/genre/{id}', 'edit')->name('genre.edit');
+        Route::post('/genre/{id}', 'update')->name('genre.update');
+        Route::delete('/genre/{id}', 'destroy')->name('genre.destroy');
+
+    });
 
 
     // video rating manager
@@ -104,16 +118,21 @@ Route::group(['middleware' => ['auth', 'isAdmin']], function(){
     });
 
 
-    // video routes
-    Route::get('/videos', [VideoController::class, 'index'])->name('videos') ;
-    Route::get('/videos/create', [VideoController::class, 'create'])->name('create.videos') ;
-    Route::post('/videos/store', [VideoController::class, 'store'])->name('store.videos') ;
-    Route::get('/videos/show/{id}', [VideoController::class, 'show'])->name('show.videos') ;
-    Route::get('/videos/edit/{id}', [VideoController::class, 'edit'])->name('edit.videos') ;
-    Route::delete('/videos/delete/{id}', [VideoController::class, 'destroy'])->name('destory.videos') ;
-    Route::post('/videos/update/{id}', [VideoController::class, 'update'])->name('update.videos') ;
-    Route::get('/videos/draft/{id}', [VideoController::class, 'draft'])->name('draft.videos') ;
-    Route::get('/videos/activate/{id}', [VideoController::class, 'activate'])->name('activate.videos') ;
+
+    //manage video routes
+    Route::controller(VideoController::class)->group(function(){
+        Route::get('/videos', 'index')->name('videos') ;
+        Route::get('/videos/create', 'create')->name('create.videos') ;
+        Route::post('/videos/store', 'store')->name('store.videos') ;
+        Route::get('/videos/show/{id}', 'show')->name('show.videos') ;
+        Route::get('/videos/edit/{id}', 'edit')->name('edit.videos') ;
+        Route::delete('/videos/delete/{id}', 'destroy')->name('destory.videos') ;
+        Route::post('/videos/update/{id}', 'update')->name('update.videos') ;
+        Route::get('/videos/draft/{id}', 'draft')->name('draft.videos') ;
+        Route::get('/videos/activate/{id}', 'activate')->name('activate.videos') ;
+        
+
+    });
 
     Route::controller(BlogController::class)->group(function(){
         Route::get('blog', 'index')->name('blog');
@@ -135,5 +154,7 @@ Route::group(['middleware' => ['auth', 'isAdmin']], function(){
     // Route::class
 });
 
-// User payment route
-Route::get('/payments', [PaymentController::class, 'index'])->name('payments');
+// User payment managment  route
+Route::controller(PaymentController::class)->group(function(){
+    Route::get('/payments', 'index')->name('payments');
+});

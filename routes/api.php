@@ -19,71 +19,58 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::get('/sanctum/csrf-cookie', function () {
-//     return ['csrf_token' => csrf_token()];
-// });
+Route::controller(UserController::class)->group(function(){
 
-// Route::middleware('auth:api')->group(function(){});
+    Route::post('/register', 'register');
+    Route::post('/login', 'login');
 
-Route::post('/register', [UserController::class, 'register']);
+    Route::get('account/verify/{token}', 'verifyAccount')->name('user.verify');
+    Route::get('confirm/verify', 'confirmVerify')->name('confirm.verify');
 
-Route::post('/login', [UserController::class, 'login']);
+    // save and update route for online payment
+    Route::post('/payment', 'savePayment');
 
-Route::get('account/verify/{token}', [UserController::class, 'verifyAccount'])->name('user.verify');
-Route::get('confirm/verify', [UserController::class, 'confirmVerify'])->name('confirm.verify');
+    // categories
+    Route::get('/categories', 'category');
+    Route::get('/firstCategory', 'firstCategory');
+    Route::get('/secondCategory', 'secondCategory');
+    Route::get('/thirdCategory', 'thirdCategory');
 
-
-
-// save and update route for online payment
-Route::post('/payment', [UserController::class, 'savePayment']);
-
-// categories
-Route::get('/categories', [UserController::class, 'category']);
-Route::get('/firstCategory', [UserController::class, 'firstCategory']);
-Route::get('/secondCategory', [UserController::class, 'secondCategory']);
-Route::get('/thirdCategory', [UserController::class, 'thirdCategory']);
-
-
+    // videos with associated category, rating, genre, parent control
+    Route::get('/allvideo', 'allVideos');
+    // videos by rating
+    Route::get('/allvideobyrating', 'allVideosByRating');
+    // videos by categories
+    Route::get('/allvideobycategory', 'allVideosByCategory');
 
 
-// videos with associated category, rating, genre, parent control
-Route::get('/allvideo', [UserController::class, 'allVideos']);
+    // get thumbnail for carousel 
+    Route::get('/thumbnail', 'BannerThumbnail');
 
-// videos by rating
-Route::get('/allvideobyrating', [UserController::class, 'allVideosByRating']);
+    // fetch a single video by id
+    Route::get('/video/{id}', 'playVideo');
 
-// videos by categories
-Route::get('/allvideobycategory', [UserController::class, 'allVideosByCategory']);
+    // fetch paymentPlans
+    Route::get('/paymentPlans', 'paymentPlan');
+    //active user plan
+    Route::get('/userActivePlan/{id}', 'userActivePlan');
 
-// get thumbnail for carousel 
-Route::get('/thumbnail', [UserController::class, 'BannerThumbnail']);
+    // video likes and dislikes
+    Route::post('videolikes/likes', 'VideoLikes');
+    Route::post('videodislikes/dislikes', 'VideoDislikes');
 
-// fetch a single video by id
-Route::get('/video/{id}', [UserController::class, 'playVideo']);
-
-// fetch paymentPlans
-Route::get('/paymentPlans', [UserController::class, 'paymentPlan']);
-
-//active user plan
-Route::get('/userActivePlan/{id}', [UserController::class, 'userActivePlan']);
-
-// video likes and dislikes
-Route::post('videolikes/likes', [UserController::class, 'VideoLikes']);
-Route::post('videodislikes/dislikes', [UserController::class, 'VideoDislikes']);
-
-// update user password
-Route::post('update-password', [UserController::class, 'updatePassword']);
-
-// forgot password
-Route::post('forgot-password', [UserController::class, 'forgotPassword']);
-
-Route::post('updateProfile', [UserController::class, 'updateProfile']);
+    // update user password
+    Route::post('update-password', 'updatePassword');
+    // forgot password
+    Route::post('forgot-password', 'forgotPassword');
+    Route::post('updateProfile', 'updateProfile');
 
 
-Route::get('blog', [UserController::class, 'blogContent']);
+    // blog management api route
+    Route::get('blog', 'blogContent');
+    Route::post('blog/comment', 'blogComment');
 
-Route::post('blog/comment', [UserController::class, 'blogComment']);
 
-
+});
 
 //ngrok http http://localhost:8000 -> REMEMBER FOR your api url to your appp

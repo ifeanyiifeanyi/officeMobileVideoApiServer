@@ -99,7 +99,7 @@
                                         <tr>
                                             <th>{{$loop->iteration}}</th>
                                             <th>{!! $reply->reply !!}</th>
-                                            <th>{!! $reply->created_at !!}</th>
+                                            <th>{{ \Carbon\Carbon::parse($reply->created_at)->diffForHumans()}}</th>
                                         </tr>
                                     @endforeach
                                     @else

@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class CommentReply extends Model
 {
     use HasFactory;
+    public function comment()
+    {
+        return $this->belongsTo(Comment::class, 'comment_id');
+    }
 }
