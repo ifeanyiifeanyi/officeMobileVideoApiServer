@@ -15,16 +15,16 @@
                     @endif
                     <div class="d-flex justify-content-between">
 
-                        <h2 class="mb-2">Payment Plans</h2>
+                        <h4 class="mb-2">Subscription Plans</h4>
                         <p style="float: right"><a class="btn btn-outline-primary" href="{{ route("payment.create") }}"><i class="fas fa-plus"></i>
-                                New Plan</a></p>
+                                New Subscription</a></p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-7 mt-4">
                         <div class="card">
                             <div class="card-header pb-0 px-3">
-                                <h3 class="mb-0">Plan Information(s)</h3>
+                                <h3 class="mb-0">Subscription Information</h3>
                             </div>
                             <div class="card-body pt-4 p-3">
                                 @if(count($allplans))
@@ -58,7 +58,7 @@
                                 </ul>
                                 @endforeach
                                 @else
-                                <p>No Payment plan(s) at the moment</p>
+                                <p>No Subscription plan(s) at the moment</p>
                                 @endif
                             </div>
                         </div>
@@ -68,18 +68,18 @@
                             <div class="card-header pb-0 px-3">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <h6 class="mb-0">Active Plans</h6>
+                                        <h6 class="mb-0">Active Subscription</h6>
                                     </div>
 
                                 </div>
                             </div>
                             @if($activePlans->count())
                             @foreach ($activePlans as $activePlan)
-                            <div class="card-body pt-4 p-3">
+                            <div class="card-body pt-1">
 
                                 <h6 class="text-uppercase text-body text-xs font-weight-bolder my-3">{{ \Carbon\Carbon::parse($activePlan->Active_date)->diffForHumans() }}</h6>
                                 <ul class="list-group">
-                                    <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                                    <li class="list-group-item border-0 d-flex justify-content-between ps-0  border-radius-lg">
                                         <div class="d-flex align-items-center">
                                             <button class="btn btn-icon-only btn-rounded btn-outline-dark mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-exclamation"></i></button>
                                             <div class="d-flex flex-column">
@@ -100,7 +100,7 @@
 
                                 <ul class="list-group">
 
-                                    <a href="" class="btn btn-sm bg-gradient-danger">No Active Plan(s)</a>
+                                    <a href="" class="btn btn-sm bg-gradient-danger">No Active Subscription(s)</a>
                                 </ul>
                             </div>
                             @endif

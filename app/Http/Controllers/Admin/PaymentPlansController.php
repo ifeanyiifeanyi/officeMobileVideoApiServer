@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\PaymentPlan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class PaymentPlansController extends Controller
 {
     public function index()
     {
         $allplans  = PaymentPlan::latest()->where('status', 1)->get();
+
+        // fetch active subscription, display activated subscription once 
+        // even if multiple users subscribed it
         $activePlans = PaymentPlan::join('active_plans', 'payment_plans.id', '=', 'active_plans.paymentPlanId') 
-            ->select('active_plans.created_at AS Active_date', 'payment_plans.name AS plan_name', 'payment_plans.duration_in_name AS plan_duration_name', 'payment_plans.id AS plan_id', 'payment_plans.amount As amount')->get();
+        ->groupBy('payment_plans.id')
+        ->select(DB::raw('MAX(active_plans.created_at) AS Active_date'), 'payment_plans.name AS plan_name', 'payment_plans.duration_in_name AS plan_duration_name', 'payment_plans.id AS plan_id', 'payment_plans.amount As amount')
+        ->get();
+    
             // dd($activePlans);
         return view('admin.paymentplans.index', compact('allplans', 'activePlans'));
     }

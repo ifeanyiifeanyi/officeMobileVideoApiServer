@@ -46,7 +46,7 @@
                                         <td>{{$activePlan->username}}</td>
                                         <td>{{$activePlan->email}}</td>
                                         <td>{{$activePlan->status == 1? "Active" : "Not active"}}</td>
-                                        <td><a href="{{ route('user.subscribe.plan', $activePlan) }}" class="btn btn-primary btn-sm">View</a></td>
+                                        <td><a href="{{ route('user.subscribe.plan', $activePlan->activePlanId) }}" class="btn btn-primary btn-sm">View</a></td>
 
                                     </tr>
 

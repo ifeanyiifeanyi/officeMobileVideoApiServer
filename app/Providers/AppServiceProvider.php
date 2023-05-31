@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Event;
+use App\Events\SubscriptionExpiration;
 use Illuminate\Support\ServiceProvider;
+use App\Listeners\CheckSubscriptionExpiration;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +26,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Event::listen(SubscriptionExpiration::class, CheckSubscriptionExpiration::class);
+
+        $activePlans = \App\Models\ActivePlans::all();
+
+        foreach ($activePlans as $activePlan) {
+            event(new SubscriptionExpiration($activePlan));
+        }
     }
 }

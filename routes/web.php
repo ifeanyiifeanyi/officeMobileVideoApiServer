@@ -84,7 +84,8 @@ Route::group(['middleware' => ['auth', 'isAdmin']], function(){
         Route::get('/user/grant/{id}', 'MakeAdmin')->name('make.admin');
         Route::get('/user/revoke/{id}', 'RevokeAdmin')->name('admin.revoke');
         Route::delete('/delete/user/{id}', 'destroy')->name('user.destroy');
-
+        Route::get('/subscription/select/{userId}/{subscriptionId}', 'select')->name('subscription.select');
+        Route::post('/subscription/select/pay', 'paySelected')->name('subscription.select.pay');
     });
 
 
