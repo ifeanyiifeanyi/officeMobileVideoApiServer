@@ -6,7 +6,7 @@ use App\Events\SubscriptionExpiration;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Mail;
 class CheckSubscriptionExpiration
 {
     /**
@@ -40,6 +40,12 @@ class CheckSubscriptionExpiration
             $user->subscription_id = null;
             $user->subcribe_date = null;
             $user->save();
+
+            Mail::send('email.subscriptionEndEmail', ['username' => $user->name], function ($message) use ($user) {
+                $message->to($user->email);
+                $message->subject("Your Subscription Has Expired");
+            });
+            
         } else {
             $daysRemaining = $currentDate->diffInDays($expirationDate);
             // You can perform any necessary actions here for the remaining days of the subscription
