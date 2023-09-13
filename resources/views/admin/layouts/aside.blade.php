@@ -3,6 +3,7 @@
   $route = Route::current()->getName();
 @endphp
 <style>
+  
 .active{
   background-image: url('https://img.freepik.com/free-vector/pink-purple-shades-wavy-background_23-2148897830.jpg') !important;
   background-position: center !important;
