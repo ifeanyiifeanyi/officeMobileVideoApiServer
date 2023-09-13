@@ -17,6 +17,7 @@ The **Sabi Catechism API** is a powerful and flexible Laravel-based API applicat
 
 - **Search and Filters**: Powerful search and filtering capabilities for users to find specific catechism content quickly.
 
+
 - **API Integration**: Designed for seamless integration into React Native mobile applications.
 
 - **Scalable and Extendable**: Built on Laravel, a highly scalable and extensible PHP framework, making it easy to add custom features.
