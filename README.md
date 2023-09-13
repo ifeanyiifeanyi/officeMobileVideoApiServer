@@ -22,6 +22,7 @@ The **Sabi Catechism API** is a powerful and flexible Laravel-based API applicat
 
 - **Scalable and Extendable**: Built on Laravel, a highly scalable and extensible PHP framework, making it easy to add custom features.
 
+
 ## Installation
 
 To set up the Sabi Catechism API locally, follow these steps:
